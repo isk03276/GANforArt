@@ -18,13 +18,13 @@ class Generator(nn.Module):
         self.dconv4 = nn.ConvTranspose2d(nf*2, nf, 4, 2, 1, bias=False)
         self.bn4 = nn.BatchNorm2d(nf)
 
-        self.donv5 = nn.ConvTranspose2d(nf, nc, 4, 2, 1, bias=False)
+        self.dconv5 = nn.ConvTranspose2d(nf, nc, 4, 2, 1, bias=False)
 
     def forward(self, z):
         x = F.relu(self.bn1(self.dconv1(z)))
         x = F.relu(self.bn2(self.dconv2(x)))
         x = F.relu(self.bn3(self.dconv3(x)))
         x = F.relu(self.bn4(self.dconv4(x)))
-        x = F.relu(self.dconv5(x))
+        x = F.tanh(self.dconv5(x))
 
         return x
