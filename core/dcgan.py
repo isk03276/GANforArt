@@ -30,7 +30,11 @@ class DCGAN:
 
         vutils.save_image(output[0].data, "test.png", normalize=True)
 
+    def test_discriminator(self):
+        pass
 
+    def train(self):
+        pass
 
 
 
