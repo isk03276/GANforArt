@@ -19,19 +19,24 @@ class DCGAN:
         self.data_loader = DatasetManager(self.dataset_path,
                                           img_size=self.image_size,
                                           batch_size=self.batch_size)
-        self.generator = Generator(nz=100, nc=self.nc, nf=self.ngf,
+        self.generator = Generator(nz=self.nz, nc=self.nc, nf=self.ngf,
                                    image_size=self.image_size)
-        self.discriminator = Discriminator()
+        self.discriminator = Discriminator(nc=self.nc, nf=self.ndf)
 
     def test_generator(self):
         random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
         with torch.no_grad():
-            output = self.generator(random_noise)
+            fake_image = self.generator(random_noise)
 
-        vutils.save_image(output[0].data, "test.png", normalize=True)
+        vutils.save_image(fake_image[0].data, "test.png", normalize=True)
 
     def test_discriminator(self):
-        pass
+        random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
+        with torch.no_grad():
+            fake_image = self.generator(random_noise)
+        d_value = self.discriminator(fake_image)
+
+        print(d_value[0])
 
     def train(self):
         pass
@@ -40,4 +45,4 @@ class DCGAN:
 
 if __name__ == "__main__":
     dcgan = DCGAN()
-    dcgan.test_generator()
+    dcgan.test_discriminator()
