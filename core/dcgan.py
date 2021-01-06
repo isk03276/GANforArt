@@ -21,6 +21,7 @@ class DCGAN:
         self.dataset_path = dataset_path
         self.epoch = epoch
         self.lr = lr
+        self.save_dir = '../results/'
 
         self.data_loader = DatasetManager(self.dataset_path,
                                           img_size=self.image_size,
@@ -35,12 +36,14 @@ class DCGAN:
                                             lr=self.lr)
         self.bce_loss_func = nn.BCELoss()
 
-    def test_generator(self):
+    def test_generator(self, i):
         random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
         with torch.no_grad():
             fake_image = self.generator(random_noise)
 
-        vutils.save_image(fake_image[0].data, "test.png", normalize=True)
+        vutils.save_image(fake_image[0].data,
+                          self.save_dir+"generator_test_{}.png".format(i),
+                          normalize=True)
 
     def test_discriminator(self):
         random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
@@ -69,13 +72,17 @@ class DCGAN:
                 discriminator_loss.backward()
                 self.optimizer_d.step()
 
-                # update generator
+                # update
+                random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
+                fake_images = self.generator(random_noise)
+                fake_predicts = self.discriminator(fake_images).view(-1, 1)
                 generator_loss = self.bce_loss_func(fake_predicts, real_labels)
 
                 self.generator.zero_grad()
                 generator_loss.backward()
                 self.optimizer_g.step()
-
+                print("gogo!")
+            self.test_generator(e)
 
 if __name__ == "__main__":
     dcgan = DCGAN()
