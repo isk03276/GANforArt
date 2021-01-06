@@ -10,8 +10,8 @@ import torchvision.utils as vutils
 class DCGAN:
     def __init__(self, nz=100, image_size=64, nc=3, ngf=64,
                  ndf=64, batch_size=128, epoch=100,
-                 dataset_path="../../data/wikiart", lr=0.001):
-
+                 dataset_path="../../data/wikiart", lr=0.0002,
+                 beta1=0.5, beta2=0.999):
         self.nz = nz
         self.image_size = image_size
         self.nc = nc
@@ -22,6 +22,8 @@ class DCGAN:
         self.epoch = epoch
         self.lr = lr
         self.save_dir = '../results/'
+        self.beta1 = beta1
+        self.beta2 = beta2
 
         self.data_loader = DatasetManager(self.dataset_path,
                                           img_size=self.image_size,
@@ -31,9 +33,9 @@ class DCGAN:
         self.discriminator = Discriminator(nc=self.nc, nf=self.ndf)
 
         self.optimizer_g = torch.optim.Adam(self.generator.parameters(),
-                                            lr=self.lr)
+                                            lr=self.lr, betas=(self.beta1, self.beta2))
         self.optimizer_d = torch.optim.Adam(self.discriminator.parameters(),
-                                            lr=self.lr)
+                                            lr=self.lr, betas=(self.beta1, self.beta2))
         self.bce_loss_func = nn.BCELoss()
 
     def test_generator(self, i):
@@ -83,6 +85,7 @@ class DCGAN:
                 self.optimizer_g.step()
                 print("gogo!")
             self.test_generator(e)
+
 
 if __name__ == "__main__":
     dcgan = DCGAN()
