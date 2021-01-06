@@ -9,7 +9,7 @@ import torchvision.utils as vutils
 
 class DCGAN:
     def __init__(self, nz=100, image_size=64, nc=3, ngf=64,
-                 ndf=64, batch_size=128, epoch=100,
+                 ndf=64, batch_size=128, epoch=10,
                  dataset_path="../../data/wikiart", lr=0.0002,
                  beta1=0.5, beta2=0.999):
         self.nz = nz
@@ -55,6 +55,14 @@ class DCGAN:
 
         print(d_value[0])
 
+    def save(self):
+        torch.save({
+            'generator' : self.generator.state_dict(),
+            'discriminator' : self.discriminator.state_dict(),
+            'optimizer_g' : self.optimizer_g.state_dict(),
+            'optimizer_d' : self.optimizer_d.state_dict()
+        }, self.save_dir)
+
     def train(self):
         for e in range(self.epoch):
             for i, (real_images, labels) in enumerate(self.data_loader):
@@ -85,6 +93,7 @@ class DCGAN:
                 self.optimizer_g.step()
                 print("gogo!")
             self.test_generator(e)
+        self.save_dir
 
 
 if __name__ == "__main__":
