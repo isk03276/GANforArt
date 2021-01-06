@@ -33,7 +33,7 @@ class DCGAN:
                                             lr=self.lr)
         self.optimizer_d = torch.optim.Adam(self.discriminator.parameters(),
                                             lr=self.lr)
-        self.loss_d = nn.BCELoss()
+        self.bce_loss_func = nn.BCELoss()
 
     def test_generator(self):
         random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
@@ -50,9 +50,6 @@ class DCGAN:
 
         print(d_value[0])
 
-    def update_parameter(self):
-        pass
-
     def train(self):
         for e in range(self.epoch):
             for i, (real_images, labels) in enumerate(self.data_loader):
@@ -61,11 +58,11 @@ class DCGAN:
                 fake_images = self.generator(random_noise)
                 fake_predicts = self.discriminator(fake_images).view(-1, 1)
                 fake_labels = torch.zeros(self.batch_size, 1)
-                fake_loss = self.loss_d(fake_predicts, fake_labels)
+                fake_loss = self.bce_loss_func(fake_predicts, fake_labels)
 
                 real_predicts = self.discriminator(real_images).view(-1, 1)
                 real_labels = torch.ones(self.batch_size, 1)
-                real_loss = self.loss_d(real_predicts, real_labels)
+                real_loss = self.bce_loss_func(real_predicts, real_labels)
                 discriminator_loss = fake_loss + real_loss
 
                 self.discriminator.zero_grad()
@@ -73,7 +70,11 @@ class DCGAN:
                 self.optimizer_d.step()
 
                 # update generator
-                ########TO DO
+                generator_loss = self.bce_loss_func(fake_predicts, real_labels)
+
+                self.generator.zero_grad()
+                generator_loss.backward()
+                self.optimizer_g.step()
 
 
 if __name__ == "__main__":

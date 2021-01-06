@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f1d2fb1-5176-4998-ae44-0fbcbbda5299" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/dcgan.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/dcgan.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/dcgan_discriminator.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/dcgan_discriminator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/dcgan_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/dcgan_generator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
