@@ -1,18 +1,26 @@
 import torch
-from model.dcgan_generator import Generator
-from model.dcgan_discriminator import Discriminator
+
 
 class GAN:
-    def __init__(self, nz, image_size, nc, ngf, ndf):
+    def __init__(self, nz, image_size, nc, ngf, ndf, model="dcgan"):
         self.nz = nz
         self.image_size = image_size
         self.nc = nc
         self.ngf = ngf
         self.ndf = ndf
 
-        self.generator = Generator(nz=self.nz, nc=self.nc, nf=self.ngf,
-                                   image_size=self.image_size)
-        self.discriminator = Discriminator(nc=self.nc, nf=self.ndf)
+        if model == "dcgan":
+            from model.dcgan_generator import Generator
+            from model.dcgan_discriminator import Discriminator
+            self.generator = Generator(nz=self.nz, nc=self.nc,
+                                       nf=self.ngf, image_size=self.image_size)
+            self.discriminator = Discriminator(nc=self.nc, nf=self.ndf)
+        elif model == "can":
+            from model.dcgan_generator import Generator #### 수정해야 함
+            from model.can_discriminator import Discriminator
+            self.generator = Generator(nz=self.nz, nc=self.nc,
+                                       nf=self.ngf, image_size=self.image_size)
+            self.discriminator = Discriminator(nc=self.nc, nf=self.ndf)
 
     def save(self, file_name):
         torch.save({
