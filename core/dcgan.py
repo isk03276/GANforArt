@@ -2,21 +2,17 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from dataset.dataset_manager import DatasetManager
-from model.dcgan_generator import Generator
-from model.dcgan_discriminator import Discriminator
 import torchvision.utils as vutils
 
+from core.gan import GAN
 
-class DCGAN:
+
+class DCGAN(GAN):
     def __init__(self, nz=100, image_size=64, nc=3, ngf=64,
                  ndf=64, batch_size=128, epoch=10,
                  dataset_path="../../data/wikiart", lr=0.0002,
                  beta1=0.5, beta2=0.999):
-        self.nz = nz
-        self.image_size = image_size
-        self.nc = nc
-        self.ngf = ngf
-        self.ndf = ndf
+        super(DCGAN, self).__init__(nz, image_size, nc, ngf, ndf)
         self.batch_size = batch_size
         self.dataset_path = dataset_path
         self.epoch = epoch
@@ -28,9 +24,6 @@ class DCGAN:
         self.data_loader = DatasetManager(self.dataset_path,
                                           img_size=self.image_size,
                                           batch_size=self.batch_size).dataset_loader
-        self.generator = Generator(nz=self.nz, nc=self.nc, nf=self.ngf,
-                                   image_size=self.image_size)
-        self.discriminator = Discriminator(nc=self.nc, nf=self.ndf)
 
         self.optimizer_g = torch.optim.Adam(self.generator.parameters(),
                                             lr=self.lr, betas=(self.beta1, self.beta2))
@@ -38,7 +31,7 @@ class DCGAN:
                                             lr=self.lr, betas=(self.beta1, self.beta2))
         self.bce_loss_func = nn.BCELoss()
 
-    def test_generator(self, i):
+    def test_generator(self, save_dir, i):
         random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
         with torch.no_grad():
             fake_image = self.generator(random_noise)
@@ -55,13 +48,6 @@ class DCGAN:
 
         print(d_value[0])
 
-    def save(self):
-        torch.save({
-            'generator' : self.generator.state_dict(),
-            'discriminator' : self.discriminator.state_dict(),
-            'optimizer_g' : self.optimizer_g.state_dict(),
-            'optimizer_d' : self.optimizer_d.state_dict()
-        }, self.save_dir)
 
     def train(self):
         for e in range(self.epoch):
@@ -91,9 +77,9 @@ class DCGAN:
                 self.generator.zero_grad()
                 generator_loss.backward()
                 self.optimizer_g.step()
-                print("gogo!")
+                print("gogo!", i)
             self.test_generator(e)
-        self.save_dir
+            self.save_dir("epoch_{}".foramt(e))
 
 
 if __name__ == "__main__":
