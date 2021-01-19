@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="7f1d2fb1-5176-4998-ae44-0fbcbbda5299" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/can.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/can.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/dcgan.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/dcgan.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/gan.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/gan.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/can_discriminator.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/can_discriminator.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,8 +108,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.dcgan" />
         <item itemvalue="Python.can" />
+        <item itemvalue="Python.dcgan" />
         <item itemvalue="Python.dataset_manager" />
       </list>
     </recent_temporary>
@@ -134,5 +135,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

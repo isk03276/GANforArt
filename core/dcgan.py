@@ -47,7 +47,6 @@ class DCGAN(GAN):
 
         print(d_value[0])
 
-
     def train(self):
         for e in range(self.epoch):
             for i, (real_images, labels) in enumerate(self.data_loader):
@@ -78,7 +77,7 @@ class DCGAN(GAN):
                 self.optimizer_g.step()
                 print("gogo!", i)
             self.test_generator(e)
-            self.save_dir("epoch_{}".foramt(e))
+            self.save("epoch_{}".format(e))
 
 
 if __name__ == "__main__":

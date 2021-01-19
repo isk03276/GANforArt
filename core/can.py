@@ -83,7 +83,7 @@ class CAN(GAN):
                 self.optimizer_g.step()
                 print("gogo!", i)
             self.test_generator(e)
-            self.save_dir("epoch_{}".foramt(e))
+            self.save("epoch_{}".foramt(e))
 
 
 if __name__ == "__main__":
