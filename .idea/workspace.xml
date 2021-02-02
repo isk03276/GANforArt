@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f1d2fb1-5176-4998-ae44-0fbcbbda5299" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/GANforArt.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/GANforArt.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/dcgan.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/dcgan.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/gan.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/gan.py" afterDir="false" />
@@ -38,10 +40,10 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="last_opened_file_path" value="$USER_HOME$/anaconda3/envs/gan/python.exe" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
   </component>
-  <component name="RunManager" selected="Python.can">
+  <component name="RunManager" selected="Python.dcgan">
     <configuration name="can" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="GANforArt" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -134,5 +136,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

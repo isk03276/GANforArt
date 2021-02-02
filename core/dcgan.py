@@ -31,7 +31,7 @@ class DCGAN(GAN):
         self.bce_loss_func = nn.BCELoss()
 
     def test_generator(self, i):
-        random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
+        random_noise = torch.randn(self.batch_size, self.nz, 1, 1, device=self.device)
         with torch.no_grad():
             fake_image = self.generator(random_noise)
 
@@ -40,7 +40,7 @@ class DCGAN(GAN):
                           normalize=True)
 
     def test_discriminator(self):
-        random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
+        random_noise = torch.randn(self.batch_size, self.nz, 1, 1, device=self.device)
         with torch.no_grad():
             fake_image = self.generator(random_noise)
         d_value = self.discriminator(fake_image)
@@ -52,14 +52,14 @@ class DCGAN(GAN):
         for e in range(self.epoch):
             for i, (real_images, labels) in enumerate(self.data_loader):
                 # update discriminator
-                random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
+                random_noise = torch.randn(self.batch_size, self.nz, 1, 1).to(self.device)
                 fake_images = self.generator(random_noise)
                 fake_predicts = self.discriminator(fake_images).view(-1, 1)
-                fake_labels = torch.zeros(self.batch_size, 1)
+                fake_labels = torch.zeros(self.batch_size, 1).to(self.device)
                 fake_loss = self.bce_loss_func(fake_predicts, fake_labels)
 
-                real_predicts = self.discriminator(real_images).view(-1, 1)
-                real_labels = torch.ones(self.batch_size, 1)
+                real_predicts = self.discriminator(real_images.to(self.device)).view(-1, 1)
+                real_labels = torch.ones(self.batch_size, 1).to(self.device)
                 real_loss = self.bce_loss_func(real_predicts, real_labels)
                 discriminator_loss = fake_loss + real_loss
 
@@ -68,7 +68,7 @@ class DCGAN(GAN):
                 self.optimizer_d.step()
 
                 # update
-                random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
+                random_noise = torch.randn(self.batch_size, self.nz, 1, 1).to(self.device)
                 fake_images = self.generator(random_noise)
                 fake_predicts = self.discriminator(fake_images).view(-1, 1)
                 generator_loss = self.bce_loss_func(fake_predicts, real_labels)
