@@ -9,7 +9,7 @@ from core.gan import GAN
 
 class DCGAN(GAN):
     def __init__(self, nz=100, image_size=64, nc=3, ngf=64,
-                 ndf=64, batch_size=128, epoch=100,
+                 ndf=64, batch_size=32, epoch=100,
                  dataset_path="../../data/wikiart", lr=0.0002,
                  beta1=0.5, beta2=0.999):
         super(DCGAN, self).__init__(nz, image_size, nc, ngf, ndf, model="dcgan")
@@ -51,7 +51,11 @@ class DCGAN(GAN):
     def train(self):
         for e in range(self.epoch):
             for i, (real_images, labels) in enumerate(self.data_loader):
+                if real_images.size()[0] != self.batch_size: ###for error
+                    continue
+
                 # update discriminator
+
                 random_noise = torch.randn(self.batch_size, self.nz, 1, 1).to(self.device)
                 fake_images = self.generator(random_noise)
                 fake_predicts = self.discriminator(fake_images).view(-1, 1)
@@ -60,6 +64,7 @@ class DCGAN(GAN):
 
                 real_predicts = self.discriminator(real_images.to(self.device)).view(-1, 1)
                 real_labels = torch.ones(self.batch_size, 1).to(self.device)
+
                 real_loss = self.bce_loss_func(real_predicts, real_labels)
                 discriminator_loss = fake_loss + real_loss
 
@@ -78,7 +83,7 @@ class DCGAN(GAN):
                 self.optimizer_g.step()
                 print("gogo!", i)
             self.test_generator(e)
-            self.save_dir("epoch_{}".foramt(e))
+            self.save("epoch_{}".format(e))
 
 
 if __name__ == "__main__":
