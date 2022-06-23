@@ -25,15 +25,12 @@ def train(args):
         generator_losses = []
         discriminator_losses = []
         for images, _ in train_dataset_loader:
-            print("g start")
             fake_images = model.generate_fake_images()
             generator_loss = model.train_generator(fake_images)
             generator_losses.append(generator_loss.item())
-            print("g end")
             fake_images = model.generate_fake_images()
             discriminator_loss = model.train_discriminator(images, fake_images)
             discriminator_losses.append(discriminator_loss.item())
-            print("d end")
             
         print(status_str.format(ep+1, 
                                 args.epoch,

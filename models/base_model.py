@@ -37,6 +37,7 @@ class BaseModel(ABC):
         return loss
     
     def train_discriminator(self, real_images:torch.Tensor, fake_images:torch.Tensor):
+        real_images = real_images.to(self.device)
         loss = self.get_discriminator_loss(real_images, fake_images)
         optimize(self.discriminator, self.optimizer_d, loss)
         return loss
