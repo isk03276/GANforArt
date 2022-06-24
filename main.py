@@ -2,7 +2,7 @@ import argparse
 import datetime
 
 from dataset.dataset_manager import DatasetManager
-from utils.torch import optimize
+from utils.monitoring import Monitor
 
 
 def make_folder_name() -> str:
@@ -34,6 +34,9 @@ def train(args):
     model = model_class(batch_size=args.batch_size)
     if args.load_from is not None:
         model.load(args.load_from)
+        
+    if args.monitoring:
+        monitor = Monitor(args.batch_size)
     
     status_str = "[{}/{} episode] generator loss : {}   |   discriminator_loss : {}"
     for ep in range(1, args.epoch + 1):
@@ -41,6 +44,8 @@ def train(args):
         discriminator_losses = []
         for images, _ in train_dataset_loader:
             fake_images = model.generate_fake_images()
+            if args.monitoring:
+                monitor.monitor_images(fake_images, args.monitoring_interval)
             generator_loss = model.train_generator(fake_images)
             generator_losses.append(generator_loss.item())
             discriminator_loss = model.train_discriminator(images, fake_images)
@@ -69,9 +74,12 @@ if __name__ == "__main__":
     parser.add_argument("--load-from", type=str, help="Path to load the model")
     # train
     parser.add_argument("--epoch", type=int, default=100, help="Learning epoch")
-    parser.add_argument("--batch-size", type=int, default=100, help="Learning epoch")
+    parser.add_argument("--batch-size", type=int, default=128, help="Learning epoch")
     # test
     parser.add_argument("--test", action="store_true", help="Whether to test the model")
+    # monitoring
+    parser.add_argument("--monitoring", action="store_true", help="Whether to visualize the generated images by generator")
+    parser.add_argument("--monitoring-interval", type=int, default=1, help="Sleep for interval seconds instead.")
     
     args = parser.parse_args()
     
