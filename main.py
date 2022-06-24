@@ -1,8 +1,19 @@
 import argparse
+import datetime
 
 from dataset.dataset_manager import DatasetManager
 from utils.torch import optimize
 
+
+def make_folder_name() -> str:
+    """
+    Generate current time as string.
+    Returns:
+        str: current time
+    """
+    NOWTIMES = datetime.datetime.now()
+    curr_time = NOWTIMES.strftime("%y%m%d_%H%M%S/")
+    return curr_time
 
 def get_model_class(model:str):
     if model == "dcgan":
@@ -14,28 +25,34 @@ def get_model_class(model:str):
     return model_class
 
 def train(args):
+    path_to_save = "checkpoints/" + make_folder_name() if args.save else None
+    
     train_dataset_loader = DatasetManager(dataset_path = args.dataset_path,
                                      batch_size = args.batch_size).get_dataset_loader()
     
     model_class = get_model_class(args.model)
     model = model_class(batch_size=args.batch_size)
+    if args.load_from is not None:
+        model.load(args.load_from)
     
     status_str = "[{}/{} episode] generator loss : {}   |   discriminator_loss : {}"
-    for ep in range(args.epoch):
+    for ep in range(1, args.epoch + 1):
         generator_losses = []
         discriminator_losses = []
         for images, _ in train_dataset_loader:
             fake_images = model.generate_fake_images()
             generator_loss = model.train_generator(fake_images)
             generator_losses.append(generator_loss.item())
-            fake_images = model.generate_fake_images()
             discriminator_loss = model.train_discriminator(images, fake_images)
             discriminator_losses.append(discriminator_loss.item())
-            
-        print(status_str.format(ep+1, 
+        
+        print(status_str.format(ep, 
                                 args.epoch,
                                 sum(generator_losses) / len(generator_losses),
                                 sum(discriminator_losses)/len(discriminator_losses)))
+        
+        if args.save and ep % args.save_interval == 0:
+            model.save_model(path_to_save, "checkpoint_{}.pt".format(ep))
     
 def test(args):
     pass

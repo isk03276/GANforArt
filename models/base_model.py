@@ -1,3 +1,4 @@
+import os
 from abc import ABC, abstractmethod
 
 import torch
@@ -17,6 +18,14 @@ class BaseModel(ABC):
         
     @abstractmethod
     def _init(self):
+        pass
+    
+    @abstractmethod
+    def get_discriminator_loss(self, real_images: torch.Tensor, fake_images: torch.Tensor):
+        pass
+
+    @abstractmethod
+    def get_generator_loss(self, fake_images: torch.Tensor):
         pass
         
     def generate_random_noise(self, noise_size:int = 100):
@@ -38,14 +47,23 @@ class BaseModel(ABC):
     
     def train_discriminator(self, real_images:torch.Tensor, fake_images:torch.Tensor):
         real_images = real_images.to(self.device)
-        loss = self.get_discriminator_loss(real_images, fake_images)
+        loss = self.get_discriminator_loss(real_images, fake_images.detach())
         optimize(self.discriminator, self.optimizer_d, loss)
         return loss
     
-    @abstractmethod
-    def get_discriminator_loss(self, real_images:torch.Tensor, fake_images:torch.Tensor):
-        pass
+    def save_model(self, path, file_name):
+        os.makedirs(path, exist_ok=True)
+        torch.save({
+            'generator': self.generator.state_dict(),
+            'discriminator': self.discriminator.state_dict(),
+            'optimizer_g': self.optimizer_g.state_dict(),
+            'optimizer_d': self.optimizer_d.state_dict()
+        }, path + file_name)
     
-    @abstractmethod
-    def get_generator_loss(self, fake_images:torch.Tensor):
-        pass
+    def load_model(self, path):
+        torch.load({
+            'generator': self.generator.state_dict(),
+            'discriminator': self.discriminator.state_dict(),
+            'optimizer_g': self.optimizer_g.state_dict(),
+            'optimizer_d': self.optimizer_d.state_dict()
+        }, path)

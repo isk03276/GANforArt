@@ -6,18 +6,3 @@ def optimize(model, optimizer, loss):
     loss.backward()
     optimizer.step()
     
-def save(model, dir_path, file_name):
-    torch.save({
-        'generator' : model.state_dict(),
-        'discriminator' : model.state_dict(),
-        'optimizer_g' : model.state_dict(),
-        'optimizer_d' : model.state_dict()
-    }, dir_path+file_name)
-
-def load(model, dir_path, file_name):
-    torch.load({
-        'generator' : model.state_dict(),
-        'discriminator' : model.state_dict(),
-        'optimizer_g' : model.state_dict(),
-        'optimizer_d' : model.state_dict()
-    }, dir_path+file_name)    
