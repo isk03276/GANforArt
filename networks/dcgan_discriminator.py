@@ -9,7 +9,7 @@ from torchvision.models import resnet18
 class Discriminator(nn.Module):
     def __init__(self):
         super().__init__()
-        self.model = resnet18(pretrained=True)
+        self.model = resnet18(pretrained=False)
         self.model.fc = nn.Linear(in_features=512, out_features=1, bias=True)
 
     def forward(self, x):

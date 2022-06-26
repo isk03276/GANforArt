@@ -43,7 +43,7 @@ class Monitor:
             self.init_monitor(images.shape[1], images.shape[2]) # W * H
             
         for i, image in enumerate(images):
-            self.plt_images[i].set_data(image)
+            self.plt_images[i].set_data((image*255).astype(np.uint8))
             
         self.fig.canvas.draw_idle()
         plt.pause(interval)
