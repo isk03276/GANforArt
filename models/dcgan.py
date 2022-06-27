@@ -19,9 +19,9 @@ class DCGAN(BaseModel):
         self.generator = Generator().to(self.device)
         self.discriminator = Discriminator().to(self.device)
         self.optimizer_g = torch.optim.Adam(self.generator.parameters(),
-                                            lr=self.lr, betas=(self.beta1, self.beta2))
+                                            lr=self.lr)
         self.optimizer_d = torch.optim.Adam(self.discriminator.parameters(),
-                                            lr=self.lr, betas=(self.beta1, self.beta2))
+                                            lr=self.lr)
         self.loss_func = nn.BCELoss()
         
     

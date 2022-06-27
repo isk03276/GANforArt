@@ -5,7 +5,7 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 
 class DatasetManager:
-    def __init__(self, dataset_path, img_size=256, transform=None, batch_size=128, shuffle=True):
+    def __init__(self, dataset_path, img_size=512, transform=None, batch_size=128, shuffle=True):
         from PIL import ImageFile
         ImageFile.LOAD_TRUNCATED_IMAGES = True
         
