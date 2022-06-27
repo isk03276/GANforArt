@@ -19,14 +19,18 @@ class Monitor:
         
     def init_monitor(self, width, height):
         self.plot_size = math.ceil(math.sqrt(self.batch_size))
-        self.fig, self.ax = plt.subplots(self.plot_size, self.plot_size)
+        self.fig, self.ax = plt.subplots(self.plot_size, self.plot_size, constrained_layout=True)
         temp_image = np.zeros((width, height))
         if self.batch_size == 1:
+            self.ax.get_xaxis().set_visible(False)
+            self.ax.get_yaxis().set_visible(False)
             self.plt_images.append(self.ax.imshow(temp_image))
         else:
             for i in range(self.batch_size):
                 row = i // self.plot_size
                 col = i - row * self.plot_size
+                self.ax[row][col].get_xaxis().set_visible(False)
+                self.ax[row][col].get_yaxis().set_visible(False)
                 plt_image = self.ax[row][col].imshow(temp_image)
                 self.plt_images.append(plt_image)
         self.fig.show()
