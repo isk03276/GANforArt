@@ -39,3 +39,4 @@ $ python main.py --test --load-from TRAINED_MODEL_PATH
 
 ## References
 [Creative Adversarial Networks](https://github.com/mlberkeley/Creative-Adversarial-Networks)
+[AEGeAN](https://github.com/tymokvo/AEGeAN)
