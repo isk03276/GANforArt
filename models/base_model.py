@@ -51,7 +51,7 @@ class BaseModel(ABC):
         optimize(self.discriminator, self.optimizer_d, loss)
         return loss
     
-    def save_model(self, path, file_name):
+    def save_model(self, path:str, file_name:str):
         os.makedirs(path, exist_ok=True)
         torch.save({
             'generator': self.generator.state_dict(),
@@ -60,10 +60,10 @@ class BaseModel(ABC):
             'optimizer_d': self.optimizer_d.state_dict()
         }, path + file_name)
     
-    def load_model(self, path):
-        torch.load({
-            'generator': self.generator.state_dict(),
-            'discriminator': self.discriminator.state_dict(),
-            'optimizer_g': self.optimizer_g.state_dict(),
-            'optimizer_d': self.optimizer_d.state_dict()
-        }, path)
+    def load_model(self, path:str, load_only_generator:bool=False):
+        checkpoint = torch.load(path)
+        self.generator.load_state_dict(checkpoint['generator'])
+        self.optimizer_g.load_state_dict(checkpoint['optimizer_g'])
+        if not load_only_generator:
+            self.discriminator.load_state_dict(checkpoint['discriminator'])
+            self.optimizer_d.load_state_dict(checkpoint['optimizer_d']) 

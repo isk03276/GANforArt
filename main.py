@@ -33,7 +33,7 @@ def train(args):
     model_class = get_model_class(args.model)
     model = model_class(batch_size=args.batch_size)
     if args.load_from is not None:
-        model.load(args.load_from)
+        model.load_model(args.load_from, args.load_only_generator)
         
     if args.monitoring:
         monitor = Monitor(args.batch_size)
@@ -72,6 +72,7 @@ if __name__ == "__main__":
     parser.add_argument("--save", action="store_true", help="Whether to save the model")
     parser.add_argument("--save-interval", type=int, default=20, help="Model save interval")
     parser.add_argument("--load-from", type=str, help="Path to load the model")
+    parser.add_argument("--load-only-generator", action="store_true", help="Whether to load only the generator")
     # train
     parser.add_argument("--epoch", type=int, default=100, help="Learning epoch")
     parser.add_argument("--batch-size", type=int, default=128, help="Learning epoch")
