@@ -8,76 +8,94 @@ from networks.common import Up
 class Generator(nn.Module):
     def __init__(self):
         super(Generator, self).__init__()
-        self.dconv1 = nn.ConvTranspose2d(in_channels = 100,
-                                         out_channels = 256,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+        self.dconv1 = nn.ConvTranspose2d(
+            in_channels=100,
+            out_channels=256,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm1 = nn.BatchNorm2d(256)
-        
-        self.dconv2 = nn.ConvTranspose2d(in_channels = 256,
-                                         out_channels= 128,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv2 = nn.ConvTranspose2d(
+            in_channels=256,
+            out_channels=128,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm2 = nn.BatchNorm2d(128)
-        
-        self.dconv3 = nn.ConvTranspose2d(in_channels = 128,
-                                         out_channels= 128,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv3 = nn.ConvTranspose2d(
+            in_channels=128,
+            out_channels=128,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm3 = nn.BatchNorm2d(128)
-        
-        self.dconv4 = nn.ConvTranspose2d(in_channels = 128,
-                                         out_channels= 128,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv4 = nn.ConvTranspose2d(
+            in_channels=128,
+            out_channels=128,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm4 = nn.BatchNorm2d(128)
-        
-        self.dconv5 = nn.ConvTranspose2d(in_channels = 128,
-                                         out_channels= 256,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv5 = nn.ConvTranspose2d(
+            in_channels=128,
+            out_channels=256,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm5 = nn.BatchNorm2d(256)
-        
-        self.dconv6 = nn.ConvTranspose2d(in_channels = 256,
-                                         out_channels= 128,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv6 = nn.ConvTranspose2d(
+            in_channels=256,
+            out_channels=128,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm6 = nn.BatchNorm2d(128)
-        
-        self.dconv7 = nn.ConvTranspose2d(in_channels = 128,
-                                         out_channels= 128,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv7 = nn.ConvTranspose2d(
+            in_channels=128,
+            out_channels=128,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm7 = nn.BatchNorm2d(128)
-        
-        self.dconv8 = nn.ConvTranspose2d(in_channels = 128,
-                                         out_channels= 64,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv8 = nn.ConvTranspose2d(
+            in_channels=128,
+            out_channels=64,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
         self.batch_norm8 = nn.BatchNorm2d(64)
-        
-        self.dconv9 = nn.ConvTranspose2d(in_channels = 64,
-                                         out_channels= 3,
-                                         kernel_size = 4,
-                                         stride=2,
-                                         padding=1,
-                                         bias=False)
+
+        self.dconv9 = nn.ConvTranspose2d(
+            in_channels=64,
+            out_channels=3,
+            kernel_size=4,
+            stride=2,
+            padding=1,
+            bias=False,
+        )
 
     def forward(self, z):
         x = F.leaky_relu(self.batch_norm1(self.dconv1(z)), inplace=True)

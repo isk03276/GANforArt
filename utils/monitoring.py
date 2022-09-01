@@ -16,10 +16,12 @@ class Monitor:
         self.ax = None
         self.plot_size = None
         self.plt_images = []
-        
+
     def init_monitor(self, width, height):
         self.plot_size = math.ceil(math.sqrt(self.batch_size))
-        self.fig, self.ax = plt.subplots(self.plot_size, self.plot_size, constrained_layout=True)
+        self.fig, self.ax = plt.subplots(
+            self.plot_size, self.plot_size, constrained_layout=True
+        )
         temp_image = np.zeros((width, height))
         if self.batch_size == 1:
             self.ax.get_xaxis().set_visible(False)
@@ -34,25 +36,22 @@ class Monitor:
                 plt_image = self.ax[row][col].imshow(temp_image)
                 self.plt_images.append(plt_image)
         self.fig.show()
-    
-    def monitor_images(self, images:Union[torch.Tensor, np.ndarray], interval:int = 1):
-        assert len(images.shape) == 4 # Batch_size X Width X Height X Channels
+
+    def monitor_images(
+        self, images: Union[torch.Tensor, np.ndarray], interval: int = 1
+    ):
+        assert len(images.shape) == 4  # Batch_size X Width X Height X Channels
         assert images.shape[0] == self.batch_size
-        
+
         if type(images) == torch.Tensor:
             images = tensor_to_numpy_array(images)
         images = channel_first_to_last(images)
-        
+
         if self.fig is None or self.ax is None:
-            self.init_monitor(images.shape[1], images.shape[2]) # W * H
-            
+            self.init_monitor(images.shape[1], images.shape[2])  # W * H
+
         for i, image in enumerate(images):
-            self.plt_images[i].set_data((image*255).astype(np.uint8))
-            
+            self.plt_images[i].set_data((image * 255).astype(np.uint8))
+
         self.fig.canvas.draw_idle()
         plt.pause(interval)
-
-            
-            
-        
-    

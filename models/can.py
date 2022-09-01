@@ -8,29 +8,41 @@ from core.base_gan import GAN
 
 
 class CAN(GAN):
-    def __init__(self, nz=100, image_size=256, nc=3, ngf=64,
-                 ndf=1, batch_size=128, epoch=100,
-                 dataset_path="../../data/wikiart", lr=0.0001,
-                 beta1=0.5, beta2=0.999):
+    def __init__(
+        self,
+        nz=100,
+        image_size=256,
+        nc=3,
+        ngf=64,
+        ndf=1,
+        batch_size=128,
+        epoch=100,
+        dataset_path="../../data/wikiart",
+        lr=0.0001,
+        beta1=0.5,
+        beta2=0.999,
+    ):
         self.batch_size = batch_size
         self.dataset_path = dataset_path
         self.epoch = epoch
         self.lr = lr
-        self.save_dir = '../results/'
+        self.save_dir = "../results/"
         self.beta1 = beta1
         self.beta2 = beta2
         self.image_size = image_size
 
-        self.data_loader = DatasetManager(self.dataset_path,
-                                          img_size=self.image_size,
-                                          batch_size=self.batch_size).dataset_loader
+        self.data_loader = DatasetManager(
+            self.dataset_path, img_size=self.image_size, batch_size=self.batch_size
+        ).dataset_loader
         print(self.data_loader.__sizeof__())
         super(CAN, self).__init__(nz, image_size, nc, ngf, ndf, "can")
 
-        self.optimizer_g = torch.optim.Adam(self.generator.parameters(),
-                                            lr=self.lr, betas=(self.beta1, self.beta2))
-        self.optimizer_d = torch.optim.Adam(self.discriminator.parameters(),
-                                            lr=self.lr, betas=(self.beta1, self.beta2))
+        self.optimizer_g = torch.optim.Adam(
+            self.generator.parameters(), lr=self.lr, betas=(self.beta1, self.beta2)
+        )
+        self.optimizer_d = torch.optim.Adam(
+            self.discriminator.parameters(), lr=self.lr, betas=(self.beta1, self.beta2)
+        )
         self.bce_loss_func = nn.BCELoss()
 
     def test_generator(self, save_dir, i):
@@ -38,17 +50,19 @@ class CAN(GAN):
         with torch.no_grad():
             fake_image = self.generator(random_noise)
 
-        vutils.save_image(fake_image[0].data,
-                          self.save_dir+"generator_test_{}.png".format(i),
-                          normalize=True)
+        vutils.save_image(
+            fake_image[0].data,
+            self.save_dir + "generator_test_{}.png".format(i),
+            normalize=True,
+        )
 
     def test_discriminator(self):
-        #random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
-        #with torch.no_grad():
+        # random_noise = torch.randn(self.batch_size, self.nz, 1, 1)
+        # with torch.no_grad():
         #    fake_image = self.generator(random_noise)
-        random_image = torch.randn(self.batch_size,
-                                   self.nc, self.image_size,
-                                   self.image_size)
+        random_image = torch.randn(
+            self.batch_size, self.nc, self.image_size, self.image_size
+        )
         d_value = self.discriminator(random_image)
 
         print(d_value[0])
