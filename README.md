@@ -1,7 +1,7 @@
 # GANforArt
 **An implementation of "CAN: Creative Adversarial Networks"**  
 
-**The aim of this repo is to implement a CAN model that can handle high-resolution images.**
+**The aim of this repo is to implement the CAN model that can handle high-resolution images.**
 
 
 ## Data
